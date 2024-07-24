@@ -23,42 +23,7 @@
 
     <section id="home">
         <div class="gallery">
-            <div class="gallery-item">
-                <img src="images/project1.jpg" alt="Project 1">
-                <div class="overlay">
-                    <div class="text">Project 1</div>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/project2.jpg" alt="Project 2">
-                <div class="overlay">
-                    <div class="text">Project 2</div>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/project3.jpg" alt="Project 3">
-                <div class="overlay">
-                    <div class="text">Project 3</div>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/project4.jpg" alt="Project 4">
-                <div class="overlay">
-                    <div class="text">Project 4</div>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/project5.jpg" alt="Project 5">
-                <div class="overlay">
-                    <div class="text">Project 5</div>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/project6.jpg" alt="Project 6">
-                <div class="overlay">
-                    <div class="text">Project 6</div>
-                </div>
-            </div>
+            <!-- Gallery items will be dynamically added here -->
         </div>
     </section>
 
@@ -79,6 +44,11 @@
     <section id="portfolio">
         <h2>My Work</h2>
         <!-- Admin editable area -->
+        <form id="project-form">
+            <input type="text" id="project-title" placeholder="Project Title" required>
+            <input type="file" id="project-image" accept="image/*" required>
+            <button type="submit">Add Project</button>
+        </form>
         <div contenteditable="true" class="editable">
             <p>Project descriptions or details can be edited here by the admin.</p>
         </div>
@@ -92,5 +62,29 @@
     <footer>
         <p>&copy; 2024 KIM DO YUL. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('project-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('project-title').value;
+            const file = document.getElementById('project-image').files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgSrc = e.target.result;
+                const gallery = document.querySelector('.gallery');
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+                galleryItem.innerHTML = \`
+                    <img src="\${imgSrc}" alt="\${title}">
+                    <div class="overlay">
+                        <div class="text">\${title}</div>
+                    </div>
+                \`;
+                gallery.appendChild(galleryItem);
+                document.getElementById('project-form').reset();
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 </body>
 </html>
